@@ -8,6 +8,7 @@ import 'package:flutter_blog/ui/widgets/custom_elavated_button.dart';
 import 'package:flutter_blog/ui/widgets/custom_text_area.dart';
 import 'package:flutter_blog/ui/widgets/custom_text_form_field.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 class PostWriteForm extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
@@ -38,6 +39,8 @@ class PostWriteForm extends ConsumerWidget {
             text: "글쓰기",
             funPageRoute: () async {
               if (_formKey.currentState!.validate()) {
+                Logger().d("title : ${_title.text}");
+                Logger().d("content : ${_content.text}");
                 PostSaveReqDTO reqDTO = PostSaveReqDTO(title: _title.text, content: _content.text);
                 await ref.read(postListPageProvider.notifier).notifyAdd(reqDTO);
               }

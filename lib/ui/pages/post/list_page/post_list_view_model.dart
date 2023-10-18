@@ -33,6 +33,26 @@ class PostListPageViewModel extends StateNotifier<PostListPageModel?> {
     state = PostListPageModel(posts: responseDTO.data);
   }
 
+  // Future<void> notifyAdd(PostSaveReqDTO dto) async {
+  //   SessionStore sessionStore = ref.read(sessionProvider);
+  //
+  //   ResponseDTO responseDTO =
+  //   await PostRepository().fetchPost(sessionStore.jwt!, dto);
+  //
+  //   if (responseDTO.code == 1) {
+  //     Post newPost = responseDTO.data as Post; // 1. dynamic(Post) -> 다운캐스팅
+  //     List<Post> newPosts = [
+  //       newPost,
+  //       ...state!.posts
+  //     ]; // 2. 기존 상태에 데이터 추가 [전개연산자]
+  //     state = PostListModel(
+  //         newPosts); // 3. 뷰모델(창고) 데이터 갱신이 완료 -> watch 구독자는 rebuild됨.
+  //     Navigator.pop(mContext!); // 4. 글쓰기 화면 pop
+  //   } else {
+  //     ScaffoldMessenger.of(mContext!).showSnackBar(
+  //         SnackBar(content: Text("게시물 작성 실패 : ${responseDTO.msg}")));
+  //   }
+  // }
   Future<void> notifyAdd(PostSaveReqDTO reqDTO) async {
     Logger().d("notifyAdd");
 
@@ -45,9 +65,9 @@ class PostListPageViewModel extends StateNotifier<PostListPageModel?> {
       Post newPost = responseDTO.data;
 
       List<Post> posts = state!.posts;
-      List<Post> newPosts = [newPost, ...posts];
+      List<Post> newPosts = [newPost, ...posts]; // 2. 기존 상태에 데이터 추가 [전개연산자]
 
-      state = PostListPageModel(posts: newPosts);
+      state = PostListPageModel(posts: newPosts); // 3. 뷰모델(창고) 데이터 갱신이 완료 -> watch 구독자는 rebuild 됨.
       Navigator.pop(mContext!, Move.postListPage);
     }
   }
